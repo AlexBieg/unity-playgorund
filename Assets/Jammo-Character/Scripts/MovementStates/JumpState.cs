@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using Animations;
 
 public class JumpState : AbstractMovementState
 {
@@ -22,7 +23,7 @@ public class JumpState : AbstractMovementState
 
     public override void Initialize() {
         Input.prevVertVel = Input.jumpVel;
-        Input.animator.SetBool("isJumping", true);
+        Input.animator.SetBool(AnimationHashes.isJumping, true);
     }
 
     public override void Update()
@@ -40,6 +41,6 @@ public class JumpState : AbstractMovementState
 
     public override void TearDown()
     {
-        Input.animator.SetBool("isJumping", false);
+        Input.animator.SetBool(AnimationHashes.isJumping, false);
     }
 }

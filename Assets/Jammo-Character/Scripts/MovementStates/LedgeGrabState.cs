@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Animations;
 
 public class LedgeGrabState : AbstractMovementState
 {
@@ -43,7 +44,7 @@ public class LedgeGrabState : AbstractMovementState
 
     public override void Initialize()
     {
-        Input.animator.SetBool("isHanging", true);
+        Input.animator.SetBool(AnimationHashes.isHanging, true);
         _gettingUp = false;
         _finishedGettingUp = false;
 
@@ -65,7 +66,7 @@ public class LedgeGrabState : AbstractMovementState
 
         if (startGettingUp)
         {
-            Input.animator.SetBool("isClimbingUp", true);
+            Input.animator.SetBool(AnimationHashes.isClimbingUp, true);
         }
 
         if (_gettingUp || startGettingUp)
@@ -118,14 +119,14 @@ public class LedgeGrabState : AbstractMovementState
 
         float mag = _shimmyMovement.magnitude / Input.shimmyVelocity;
         float magWithDirection = dot > 0 ? mag : -mag;
-        Input.animator.SetFloat("HangMovement", magWithDirection);
+        Input.animator.SetFloat(AnimationHashes.HangMovement, magWithDirection);
         
     }
 
     public override void TearDown()
     {
-        Input.animator.SetBool("isHanging", false);
-        Input.animator.SetBool("isClimbingUp", false);
+        Input.animator.SetBool(AnimationHashes.isHanging, false);
+        Input.animator.SetBool(AnimationHashes.isClimbingUp, false);
     }
 
 

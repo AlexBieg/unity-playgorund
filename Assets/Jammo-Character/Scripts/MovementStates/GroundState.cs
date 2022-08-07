@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Animations;
 
 public class GroundState : AbstractMovementState {
     private float _minGroundedTime = 1f;
     private float _elapsedTime;
-    
+
     public GroundState(MovementInput input) : base(input)
     {
         NeighborStates.Add(StateType.JumpState);
@@ -25,7 +26,7 @@ public class GroundState : AbstractMovementState {
     public override void Initialize() {
         Input.AdjustMove(Vector3.down);
         Input.prevVertVel = -1;
-        Input.animator.SetBool("isGrounded", true);
+        Input.animator.SetBool(AnimationHashes.isGrounded, true);
         _elapsedTime = 0;
     }
     public override void Update()
@@ -46,12 +47,12 @@ public class GroundState : AbstractMovementState {
         Vector3 moveVector = Input.moveVector;
         float currentSpeed = new Vector2(moveVector.x, moveVector.z).magnitude;
         float maxSpeed = Input.velocity * Input.sprintMultiplier;
-        Input.animator.SetFloat("Speed", currentSpeed / maxSpeed);
+        Input.animator.SetFloat(AnimationHashes.Speed, currentSpeed / maxSpeed);
     }
 
     public override void TearDown()
     {
-        Input.animator.SetBool("isGrounded", false);
+        Input.animator.SetBool(AnimationHashes.isGrounded, false);
     }
 
 

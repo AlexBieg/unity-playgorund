@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Animations;
 using UnityEngine;
 
 public class VaultState : AbstractMovementState
@@ -36,7 +37,7 @@ public class VaultState : AbstractMovementState
     public override void Initialize()
     {
         _apexHeight = Input.ledgeHit.point.y + 1.5f;
-        Input.animator.SetBool("isVaulting", true);
+        Input.animator.SetBool(AnimationHashes.isVaulting, true);
     }
 
     public override void Update()
@@ -49,6 +50,6 @@ public class VaultState : AbstractMovementState
 
     public override void TearDown()
     {
-        Input.animator.SetBool("isVaulting", false);
+        Input.animator.SetBool(AnimationHashes.isVaulting, false);
     }
 }
