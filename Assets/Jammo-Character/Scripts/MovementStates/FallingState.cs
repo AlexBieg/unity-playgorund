@@ -39,7 +39,7 @@ public class FallingState : AbstractMovementState
         float localGravity = Input.gravity * Input.fallGravityMultiplier;
 
         Input.HandleGravity(localGravity);
-        Input.HandleMove();
+        Input.HandleAirMove();
     }
 
     public override void TearDown() { }

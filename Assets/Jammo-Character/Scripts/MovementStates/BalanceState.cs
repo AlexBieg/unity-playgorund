@@ -46,7 +46,7 @@ public class BalanceState : AbstractMovementState
 
     public override void Update()
     {
-        Input.HandleMove();
+        Input.HandleGroundMove();
     }
 
     public override void TearDown()

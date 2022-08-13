@@ -39,7 +39,7 @@ public class GroundState : AbstractMovementState {
             Input.lastGroundedPos = Input.transform.position;
         }
         
-        Input.HandleMove();
+        Input.HandleGroundMove();
     }
     
     public override void UpdateAnimator()

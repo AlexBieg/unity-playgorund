@@ -109,7 +109,7 @@ public class LedgeGrabState : AbstractMovementState
         Input.moveVector = _shimmyMovement + -_ledgeFaceNormal * Input.velocity;
 
         if (Input.transform.position.y + 1.5 > Input.ledgeHit.point.y) {
-            Input.HandleGravity(Input.gravity);
+            Input.HandleGravity(Input.gravity * 2);
         }
     }
 

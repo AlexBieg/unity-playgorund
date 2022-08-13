@@ -47,7 +47,7 @@ public class WallRunState : AbstractMovementState
         float localGravity = Input.gravity * Input.wallRunGravityMultiplier;
 
         Input.HandleGravity(localGravity);
-        Input.HandleMove();
+        Input.HandleGroundMove();
     }
 
     public override void TearDown() { }

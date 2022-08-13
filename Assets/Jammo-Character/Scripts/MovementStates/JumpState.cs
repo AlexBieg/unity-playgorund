@@ -36,7 +36,7 @@ public class JumpState : AbstractMovementState
         }
 
         Input.HandleGravity(localGravity);
-        Input.HandleMove();
+        Input.HandleAirMove();
     }
 
     public override void TearDown()

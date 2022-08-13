@@ -20,8 +20,9 @@ public class MovementInput : MonoBehaviour
 
     [Header("Movement Variables")]
     public float velocity;
-    public float sprintMultiplier;
+    public float airAcceleration = 0.5f;
     public float shimmyVelocity = 5;
+    public float sprintMultiplier;
     [Space]
     public float desiredRotationSpeed = 0.1f;
     public float maxAngleToCenter = 20f;
@@ -125,10 +126,8 @@ public class MovementInput : MonoBehaviour
         isGrounded = controller.isGrounded;
 
         // Player input stuff
-        JumpInput = _input.actions["Jump"];
-        SprintInput = _input.actions["Sprint"];
-        MoveInput = _input.actions["Move"].ReadValue<Vector2>();
-        
+        UpdateInputs();
+
         // Camera Stuff
         UpdateCamera();
 
@@ -138,6 +137,27 @@ public class MovementInput : MonoBehaviour
 
         // Actually move the character
         controller.Move(moveVector * Time.deltaTime);
+    }
+
+    private void UpdateInputs()
+    {
+        JumpInput = _input.actions["Jump"];
+        SprintInput = _input.actions["Sprint"];
+        MoveInput = _input.actions["Move"].ReadValue<Vector2>();
+        
+        var movement = MoveInput;
+
+        var camTransform = cam.transform;
+        var camForward = camTransform.forward;
+        var camRight = camTransform.transform.right;
+
+        camForward.y = 0f;
+        camRight.y = 0f;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
+        desiredMoveDirection = camForward * movement.y + camRight * movement.x;
     }
 
     private void SetupJump()
@@ -170,22 +190,10 @@ public class MovementInput : MonoBehaviour
         moveVector.y = (oldVertVel + prevVertVel) / 2;
     }
 
-    public void HandleMove(float velMultiplier = 1.0f)
+    public void HandleGroundMove(float velMultiplier = 1.0f)
     {
         var movement = MoveInput;
         var isSprinting = SprintInput.IsPressed();
-
-        var camTransform = cam.transform;
-        var camForward = camTransform.forward;
-        var camRight = camTransform.transform.right;
-
-        camForward.y = 0f;
-        camRight.y = 0f;
-
-        camForward.Normalize();
-        camRight.Normalize();
-
-        desiredMoveDirection = camForward * movement.y + camRight * movement.x;
 
         if (movement.magnitude > 0)
         {
@@ -202,6 +210,19 @@ public class MovementInput : MonoBehaviour
             moveVector.x *= sprintMultiplier;
             moveVector.z *= sprintMultiplier;
         }
+    }
+
+    public void HandleAirMove()
+    {
+        var movement = MoveInput;
+        if (movement.magnitude > 0)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
+        }
+
+        var desiredMoveVector = desiredMoveDirection * velocity;
+        moveVector = Vector3.MoveTowards(moveVector, desiredMoveVector, airAcceleration);
     }
 
     public void AdjustMove(Vector3 adjustment)
